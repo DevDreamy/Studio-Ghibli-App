@@ -136,7 +136,6 @@ const cards = document.getElementsByClassName('card');
 
 // Create the filter
 filterSelect.addEventListener('change', function () {
-  console.log(filterSelect.value);
   for (let i = 0; i < cards.length; i++) {
     let director = cards[i].querySelector('.movie-director');
 
