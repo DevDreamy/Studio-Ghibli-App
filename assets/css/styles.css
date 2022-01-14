@@ -115,8 +115,11 @@ select::-ms-expand {
   padding: 15px 45px;
   margin-bottom: 40px;
   font-size: 1em;
-
   background-color: #b9e5f0;
+}
+
+.readMore-btn:hover {
+  background-color: #82d7ec;
 }
 
 .card-footer {
