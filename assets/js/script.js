@@ -49,84 +49,90 @@ request.onload = function () {
   let data = JSON.parse(this.response);
 
   // Get all directors names and filter repeated ones
-  const allDirectorsArray = data.map((data) => data.director);
+  if (request.status >= 200 && request.status < 400) {
+    const allDirectorsArray = data.map((data) => data.director);
 
-  const newDirectorsArray = allDirectorsArray.filter(function (value, index) {
-    return allDirectorsArray.indexOf(value) == index;
-  });
-
-  newDirectorsArray.forEach((director) => {
-    const filterOptions = document.createElement('option');
-    filterOptions.innerText = director;
-    filterOptions.value = director;
-
-    // Append directors names to options
-    filterSelect.appendChild(filterOptions);
-  });
-
-  data.forEach((movie) => {
-    // Create movie cards
-    const card = document.createElement('div');
-    card.setAttribute('class', 'card');
-    const cardHeader = document.createElement('div');
-    cardHeader.setAttribute('class', 'card-header');
-    const cardContent = document.createElement('div');
-    cardContent.setAttribute('class', 'card-content');
-    const cardFooter = document.createElement('div');
-    cardFooter.setAttribute('class', 'card-footer');
-
-    // Get movie banner, tittle and etc
-    const movieBanner = document.createElement('img');
-    movieBanner.src = movie.movie_banner;
-
-    const movieTitle = document.createElement('h1');
-    movieTitle.setAttribute('class', 'movie-title');
-    movieTitle.innerText = movie.title;
-
-    const movieOriginaltitle = document.createElement('h2');
-    movieOriginaltitle.setAttribute('class', 'movie-org-title');
-    movieOriginaltitle.innerText = `(${movie.original_title})`;
-
-    const movieDescription = document.createElement('p');
-    movieDescription.setAttribute('class', 'movie-desc');
-    const oldMovieDescription = movie.description;
-
-    movie.description = movie.description.substr(0, 100);
-    movieDescription.innerText = `${movie.description}...`;
-
-    // Read more button
-    const readMore = document.createElement('button');
-    readMore.setAttribute('class', 'readMore-btn');
-    readMore.innerText = 'Read more';
-    readMore.addEventListener('click', () => {
-      if (movieDescription.innerText.length <= 103) {
-        movieDescription.innerText = oldMovieDescription;
-        readMore.innerText = 'Read less';
-        return;
-      }
-      movieDescription.innerText = `${movie.description}...`;
-      readMore.innerText = 'Read more';
-      return;
+    const newDirectorsArray = allDirectorsArray.filter(function (value, index) {
+      return allDirectorsArray.indexOf(value) == index;
     });
 
-    const movieDirector = document.createElement('p');
-    movieDirector.setAttribute('class', 'movie-director');
-    movieDirector.innerText = `Director: ${movie.director}`;
+    newDirectorsArray.forEach((director) => {
+      const filterOptions = document.createElement('option');
+      filterOptions.innerText = director;
+      filterOptions.value = director;
 
-    const movieRuntime = document.createElement('p');
-    movieRuntime.innerText = `Run time: ${movie.running_time} minutes`;
+      // Append directors names to options
+      filterSelect.appendChild(filterOptions);
+    });
 
-    // Append everything to the cards
-    cardHeader.append(movieTitle, movieOriginaltitle);
+    data.forEach((movie) => {
+      // Create movie cards
+      const card = document.createElement('div');
+      card.setAttribute('class', 'card');
+      const cardHeader = document.createElement('div');
+      cardHeader.setAttribute('class', 'card-header');
+      const cardContent = document.createElement('div');
+      cardContent.setAttribute('class', 'card-content');
+      const cardFooter = document.createElement('div');
+      cardFooter.setAttribute('class', 'card-footer');
 
-    cardContent.append(movieBanner, movieDescription, readMore);
+      // Get movie banner, tittle and etc
+      const movieBanner = document.createElement('img');
+      movieBanner.src = movie.movie_banner;
 
-    cardFooter.append(movieDirector, movieRuntime);
+      const movieTitle = document.createElement('h1');
+      movieTitle.setAttribute('class', 'movie-title');
+      movieTitle.innerText = movie.title;
 
-    card.append(cardHeader, cardContent, cardFooter);
+      const movieOriginaltitle = document.createElement('h2');
+      movieOriginaltitle.setAttribute('class', 'movie-org-title');
+      movieOriginaltitle.innerText = `(${movie.original_title})`;
 
-    containerContent.appendChild(card);
-  });
+      const movieDescription = document.createElement('p');
+      movieDescription.setAttribute('class', 'movie-desc');
+      const oldMovieDescription = movie.description;
+
+      movie.description = movie.description.substr(0, 100);
+      movieDescription.innerText = `${movie.description}...`;
+
+      // Read more button
+      const readMore = document.createElement('button');
+      readMore.setAttribute('class', 'readMore-btn');
+      readMore.innerText = 'Read more';
+      readMore.addEventListener('click', () => {
+        if (movieDescription.innerText.length <= 103) {
+          movieDescription.innerText = oldMovieDescription;
+          readMore.innerText = 'Read less';
+          return;
+        }
+        movieDescription.innerText = `${movie.description}...`;
+        readMore.innerText = 'Read more';
+        return;
+      });
+
+      const movieDirector = document.createElement('p');
+      movieDirector.setAttribute('class', 'movie-director');
+      movieDirector.innerText = `Director: ${movie.director}`;
+
+      const movieRuntime = document.createElement('p');
+      movieRuntime.innerText = `Run time: ${movie.running_time} minutes`;
+
+      // Append everything to the cards
+      cardHeader.append(movieTitle, movieOriginaltitle);
+
+      cardContent.append(movieBanner, movieDescription, readMore);
+
+      cardFooter.append(movieDirector, movieRuntime);
+
+      card.append(cardHeader, cardContent, cardFooter);
+
+      containerContent.appendChild(card);
+    });
+  } else {
+    const errorMessage = document.createElement('marquee');
+    errorMessage.textContent = `An error has occurred. Please reload the page and try again.`;
+    app.appendChild(errorMessage);
+  }
 };
 
 request.send();
