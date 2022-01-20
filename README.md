@@ -1,4 +1,4 @@
-# Studio-Ghibli-App
+# Studio Ghibli App
 🧹 A web application that shows Studio Ghibli's movies and let the user filter them by director.
 
 This application consumes the [Studio Ghibli API](https://ghibliapi.herokuapp.com).
